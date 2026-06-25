@@ -10,7 +10,7 @@ A frontend language that's lightning quick, loads html on request, extremely sma
 pnpm add @boxfc/core
 ```
 
-The current version of this package is built with PNPM. PNPM is recommended pacakage manager. Later support will be added for other package managers. (This is to avoid bugs)
+The current version of this package is built with PNPM. PNPM is recommended package manager. Later support will be added for other package managers. (This is to avoid bugs)
 
 # Version info
 
