@@ -1,0 +1,36 @@
+{
+  "name": "@boxfc/core",
+  "version": "0.0.1",
+  "description": "A frontend langauge that's lightning quick, loads html on request, extremely small bundles. ⚡",
+  "main": "dist/main.js",
+  "types": "dist/main.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "framework",
+    "boxfc",
+    "fc",
+    "box",
+    "lightning",
+    "fast",
+    "powerful"
+  ],
+  "author": "Kushaal Srinandan Reddy B",
+  "license": "SEE LICENSE IN LICENSE",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^11.8.0",
+      "onFail": "download"
+    }
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/im-a-bear/boxfc.git"
+  }
+}

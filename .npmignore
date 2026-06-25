@@ -1,0 +1,44 @@
+# Source Files
+src/
+tests/
+__tests__/
+*.test.ts
+*.spec.ts
+*.test.js
+*.spec.js
+
+# TypeScript Configurations
+tsconfig.json
+tsconfig.build.json
+tsconfig.eslint.json
+
+# Tooling and Linters
+.eslintrc*
+.prettierrc*
+.babelrc*
+jest.config.*
+rollup.config.*
+webpack.config.*
+
+# Continuous Integration and Local Configs
+.github/
+.husky/
+.vscode/
+.idea/
+.env*
+.github/
+
+# Documentation and Media
+docs/
+examples/
+benchmarks/
+images/
+*.md
+!README.md
+!LICENSE
+
+# Logs and Lockfiles
+*.log
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
