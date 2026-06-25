@@ -1,6 +1,6 @@
 {
   "name": "@boxfc/core",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A frontend langauge that's lightning quick, loads html on request, extremely small bundles. ⚡",
   "main": "dist/main.js",
   "types": "dist/main.d.ts",
