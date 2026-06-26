@@ -53,3 +53,6 @@ Thumbs.db
 *.tgz
 *.tar.gz
 *.zip
+
+# Pnpm lock
+pnpm-lock.yaml
