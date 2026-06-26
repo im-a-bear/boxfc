@@ -14,4 +14,4 @@ The current version of this package is built with PNPM. PNPM is recommended pack
 
 # Version info
 
-Version 0.0.1
+Version 0.0.3
