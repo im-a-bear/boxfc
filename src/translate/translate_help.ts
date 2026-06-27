@@ -50,6 +50,9 @@ interface TranslateFile {
     path_not_valid_OS: string;
     path_given_empty: string;
     path_given_whitespace: string;
+    file_not_exist: string;
+    file_not_real_file: string;
+    not_plain_text_file: string
 }
 
 export {

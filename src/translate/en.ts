@@ -18,11 +18,17 @@ const path_not_valid_OS = "The provided path format is invalid for this OS.";
 const path_given_empty = "Path given to function is empty";
 const path_given_whitespace = "Given Path is Just whitespace";
 
+const file_not_exist = "Given file doesn't exist";
+const file_not_real_file = "Give file isn't a real file, probably a folder";
+const not_plain_text_file = "Please provide a plain text file";
+
 export {
     hello_frame,
     path_not_valid_file,
     path_not_correct_file_extension,
     path_not_valid_OS,
     path_given_empty,
-    path_given_whitespace
+    path_given_whitespace,
+    file_not_real_file,
+    not_plain_text_file
 };
