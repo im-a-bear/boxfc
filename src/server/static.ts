@@ -62,8 +62,13 @@ async function makeServer(): Promise<Promise<never>> {
     });
 }
 
+async function runServer(server: Promise<void>): Promise<void> {
+    await server;
+}
+
 export {
     setPort,
     boxList,
-    makeServer
+    makeServer,
+    runServer
 }
