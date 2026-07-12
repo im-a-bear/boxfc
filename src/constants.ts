@@ -1,3 +1,5 @@
+// src/constants.ts
+
 // file extension
 const file_extension = "bfg";
 

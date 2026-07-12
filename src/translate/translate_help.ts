@@ -1,10 +1,19 @@
+// translate/translate_help.ts
+
 // import the language constant
 import { language } from "../constants.js";
 import * as path from 'path';
 
 function getTranslateName(at_path: string) {
-    // return a import type compliant importable version
-    return path.join(at_path, 'translate', `${language}.js`);
+    // Join the path components normally
+    let resultPath = path.join(at_path, 'translate', `${language}.js`);
+    
+    // Node requires relative imports to explicitly start with '.' or '..'
+    if (!resultPath.startsWith('.') && !path.isAbsolute(resultPath)) {
+        resultPath = './' + resultPath;
+    }
+    
+    return resultPath;
 }
 
 // create a type which is basically a kind of string

@@ -1,3 +1,5 @@
+// translate/en.ts
+
 import { TranslateFileTemplate, DynamicVariable } from "./translate_help.js";
 
 // lets define our strings in english

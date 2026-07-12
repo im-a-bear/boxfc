@@ -1,3 +1,5 @@
+// src/regex.ts
+
 import { file_extension } from './constants.js';
 
 // escape characters like . for the ile extension

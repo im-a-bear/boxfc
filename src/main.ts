@@ -14,6 +14,8 @@ import {
     bfile_extension_regex
 } from './regex.js';
 import { getTranslateName, TranslateFile } from './translate/translate_help.js';
+import { bfile_to_html, CompilerOutput } from './compile/translate.js';
+import { writebfile, getelements, GetElementsResult } from './compile/binary.js';
 
 // import our strings dynamically
 const strings: TranslateFile = await import(getTranslateName('.'));
@@ -30,6 +32,8 @@ class BFile {
     // FILE_CONTENTS!: string;
     PATH: string;
 
+    compilerrc: CompilerOutput | null = null;
+
     // keep a private constructor
     private constructor(path_to: string) {
         this.PATH = path_to;
@@ -42,7 +46,24 @@ class BFile {
         await bc._check_proper_path();
         await bc._check_file();
 
-        // compile here
+        const tip = await fsc.open(bc.PATH, 'r');
+
+        const compilerc = bfile_to_html(await tip.readFile({ encoding: "utf8" }));
+
+        await tip.close();
+
+        let astro: boolean = false;
+
+        bc.compilerrc = compilerc;
+
+        compilerc.errors.forEach((elc) => {
+            console.warn(`AN ERROR OCCURED: at line ${elc.line} of ${bc.PATH}: ${elc.message}`);
+            astro = true;
+        });
+
+        if (astro) {
+            throw new Error("A compiler error occured");
+        }
 
         return bc
     }
@@ -72,9 +93,6 @@ class BFile {
     }
 
     private async _check_file() {
-        // this function checks if the full_path file exists and is a plain text file.
-        let file_handle: fsc.FileHandle | null = null;
-
         try {
             await fsc.access(this.PATH, fsd.F_OK);
 
@@ -83,17 +101,6 @@ class BFile {
             if (!stats.isFile()) {
                 throw new Error(strings.file_not_real_file); 
             }
-
-            // make a handle (to check the first 512 bytes to see if its a non-text file)
-            file_handle = await fsc.open(this.PATH, 'r');
-
-            // get our buffer
-            const { buffer } = await file_handle.read(Buffer.alloc(sample_size), 0, sample_size, 0); 
-
-            // if it contains NULL then throw error
-            if (buffer.some(byte => byte === 0)) {
-                throw new Error(strings.not_plain_text_file);
-            }
         } catch (error) {
             // rethrow if its a different kind of error
             if (error instanceof Error) {
@@ -101,11 +108,6 @@ class BFile {
             }
 
             throw new Error(strings.file_not_exist);
-        } finally {
-            // close our file very important!
-            if (file_handle !== null) {
-                await file_handle.close();
-            }
         }
     }
 }
@@ -122,7 +124,18 @@ async function readFile(path_to_bfile: string) {
     return BFile.make(path_to_bfile);
 }
 
+async function dumpcj(pathc: string, bfile: CompilerOutput)  {
+    writebfile(pathc, bfile);
+}
+
+async function readcj(pathc: string): Promise<GetElementsResult> {
+    return getelements(pathc);
+}
+
 export {
     sayHelloToV003,
-    readFile
+    readFile,
+    dumpcj,
+    readcj,
+    GetElementsResult
 };

@@ -21,13 +21,6 @@
   ],
   "author": "Kushaal Srinandan Reddy B",
   "license": "SEE LICENSE IN LICENSE",
-  "devEngines": {
-    "packageManager": {
-      "name": "pnpm",
-      "version": "^11.8.0",
-      "onFail": "download"
-    }
-  },
   "type": "module",
   "repository": {
     "type": "git",
