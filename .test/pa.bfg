@@ -1,0 +1,6 @@
+@docs boxfc.route /about;
+@docs boxfc thepage;
+
+html main {
+    <h1>hello world</h1>
+}

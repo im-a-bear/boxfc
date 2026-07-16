@@ -1,0 +1,21 @@
+@docs boxfc cont;
+@docs boxfc.route /;
+
+html kool {
+    <h1> HEY </h1>
+    <yahoo> hosh </yahoo>
+
+    <this> 
+        <input type="text"></input>
+    </this>
+
+    <bro>
+        <button id="kal">yahpp</button>
+    </bro>
+};
+
+css yahpp {
+    #kal {
+        background-color: aqua;
+    }
+}

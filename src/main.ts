@@ -16,7 +16,7 @@ import {
 import { getTranslateName, TranslateFile } from './translate/translate_help.js';
 import { bfile_to_html, CompilerOutput } from './compile/translate.js';
 import { writebfile, getelements, GetElementsResult } from './compile/binary.js';
-import { setPort, makeServer, boxList, runServer } from './server/static.js';
+import { setPort, makeServer, boxList, runServer, defaultBoxesSet } from './server/static.js';
 
 // import our strings dynamically
 const strings: TranslateFile = await import(getTranslateName('.'));
@@ -143,5 +143,6 @@ export {
     setPort,
     boxList,
     makeServer,
-    runServer
+    runServer,
+    defaultBoxesSet
 };

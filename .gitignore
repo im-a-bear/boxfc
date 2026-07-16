@@ -58,4 +58,5 @@ Thumbs.db
 pnpm-lock.yaml
 
 # Testing Directories
-.test/
+# .test/
+.test/dumped/

@@ -5,30 +5,33 @@
 //
 // html is an array because CompilerOutput.html is one string per named `html name{...}`
 // block in the source (translate.ts no longer joins blocks together). css and js stay as
-// single merged strings, since a stylesheet/script is naturally one blob.
+// single merged strings, since a stylesheet/script is naturally one blob. route is one
+// string per entry (e.g. the URL path this compiled output should be served at).
 //
 // writebfile() overwrites `filePath` by default, like a normal file write. Pass
 // { append: true } if you explicitly want to bundle multiple compiled sources into one
-// binary across separate calls — each call then adds its html entries to the array and
-// merges its css/js into the existing strings, instead of replacing the file.
+// binary across separate calls — each call then adds its html entries (and its route) to
+// the array and merges its css/js into the existing strings, instead of replacing the file.
 
 import * as fs from "fs";
 import * as path from "path";
 import { CompilerOutput } from "./translate.js";
 
 const MAGIC = Buffer.from("BFC1", "utf8"); // 4-byte format signature
-const FORMAT_VERSION = 2; // v2: html is stored as an array of strings (one per named html block)
+const FORMAT_VERSION = 3; // v3: entries also carry a `route` string
 
 interface BfileEntry {
     html: string[];
     css: string;
     js: string;
+    route: string;
 }
 
 interface GetElementsResult {
     html: string[];
     css: string;
     js: string;
+    routes: string[];
 }
 
 function encodeUint32LE(value: number): Buffer {
@@ -53,7 +56,8 @@ function encodeEntry(entry: BfileEntry): Buffer {
     return Buffer.concat([
         encodeStringArray(entry.html),
         encodeString(entry.css),
-        encodeString(entry.js)
+        encodeString(entry.js),
+        encodeString(entry.route)
     ]);
 }
 
@@ -132,7 +136,15 @@ function decodeFile(buf: Buffer): BfileEntry[] {
         const jsResult = decodeString(buf, offset);
         offset = jsResult.nextOffset;
 
-        entries.push({ html: htmlResult.value, css: cssResult.value, js: jsResult.value });
+        const routeResult = decodeString(buf, offset);
+        offset = routeResult.nextOffset;
+
+        entries.push({
+            html: htmlResult.value,
+            css: cssResult.value,
+            js: jsResult.value,
+            route: routeResult.value
+        });
     }
 
     return entries;
@@ -146,17 +158,24 @@ interface WriteBfileOptions {
 }
 
 /**
- * Serializes a CompilerOutput into the bfile binary format and writes it to `filePath`.
+ * Serializes a CompilerOutput plus its route into the bfile binary format and writes it
+ * to `filePath`.
  *
  * By default this overwrites `filePath` if it already exists. Pass `{ append: true }` if
  * you want to bundle multiple compiled sources into a single binary file across separate
- * calls (each call then adds one more entry instead of replacing the previous ones).
+ * calls (each call then adds one more entry, with its own route, instead of replacing the
+ * previous ones).
  */
-function writebfile(filePath: string, compilerInput: CompilerOutput, options: WriteBfileOptions = {}): void {
+function writebfile(
+    filePath: string,
+    compilerInput: CompilerOutput,
+    options: WriteBfileOptions = {}
+): void {
     const newEntry: BfileEntry = {
         html: [...compilerInput.html],
         css: compilerInput.css,
-        js: compilerInput.js
+        js: compilerInput.js,
+        route: String(compilerInput.metadata?.route) ?? "COMPONENT"
     };
 
     let entries: BfileEntry[] = [];
@@ -184,9 +203,10 @@ function writebfile(filePath: string, compilerInput: CompilerOutput, options: Wr
 
 /**
  * Reads a bfile binary from `filePath` and returns:
- *   - html: an array of html strings, one per entry that was written to this file
- *   - css:  every entry's css joined together into a single string
- *   - js:   every entry's js joined together into a single string
+ *   - html:   an array of html strings, one per entry that was written to this file
+ *   - css:    every entry's css joined together into a single string
+ *   - js:     every entry's js joined together into a single string
+ *   - routes: an array of routes, one per entry (parallel to entries, not to html)
  */
 function getelements(filePath: string): GetElementsResult {
     if (!fs.existsSync(filePath)) {
@@ -198,7 +218,8 @@ function getelements(filePath: string): GetElementsResult {
     return {
         html: entries.flatMap(e => e.html),
         css: entries.map(e => e.css).filter(s => s.length > 0).join("\n"),
-        js: entries.map(e => e.js).filter(s => s.length > 0).join("\n")
+        js: entries.map(e => e.js).filter(s => s.length > 0).join("\n"),
+        routes: entries.map(e => e.route)
     };
 }
 

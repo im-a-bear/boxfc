@@ -67,6 +67,7 @@ interface CompilerOutput {
     css: string;
     js: string;
     errors: CompilerError[];
+    metadata: Record<string, string | null | number | boolean>;
 }
 
 function bfile_to_html(file_buffer: string): CompilerOutput {
@@ -86,6 +87,8 @@ function bfile_to_html(file_buffer: string): CompilerOutput {
     let brace_content: string = "";
     let brace_depth: number = 0;
     let brace_start_line: number = 1;
+
+    let route: string | null = null;
 
     let line: number = 1;
 
@@ -107,6 +110,17 @@ function bfile_to_html(file_buffer: string): CompilerOutput {
 
         if (tokens[0] !== "docs") {
             return; // not a @docs decorator, nothing to enforce
+        }
+
+        if (tokens[1] === "boxfc.route") {
+            if (tokens.length < 2) {
+                reportError(`Expected @docs boxfc.route <route> but got '@${content}'`, atLine);
+                return;
+            }
+
+            route = tokens[2];
+
+            return;
         }
 
         if (tokens.length < 2) {
@@ -292,7 +306,10 @@ function bfile_to_html(file_buffer: string): CompilerOutput {
         html: htmlList,
         css: cssOutput.trim(),
         js: jsOutput.trim(),
-        errors
+        errors,
+        metadata: {
+            "route": route
+        }
     };
 }
 

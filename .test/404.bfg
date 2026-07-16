@@ -1,0 +1,73 @@
+@docs boxfc ERROR_404_NOT_FOUND;
+
+html main {
+    <div class="container">
+        <h1>404</h1>
+        <p class="title">Page Not Found</p>
+        <p class="desc">The page you're looking for doesn't exist or was moved.</p>
+        <a href="/" class="btn">Go Home</a>
+    </div>
+};
+
+css main {
+    body {
+        margin: 0;
+        padding: 0;
+        background: #0f172a;
+        color: #e2e8f0;
+        font-family: Arial, sans-serif;
+    }
+
+    .container {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 120px;
+        margin: 0;
+        color: #38bdf8;
+    }
+
+    .title {
+        font-size: 28px;
+        margin-top: 10px;
+        font-weight: bold;
+    }
+
+    .desc {
+        margin-top: 10px;
+        font-size: 16px;
+        color: #94a3b8;
+    }
+
+    .btn {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background: #38bdf8;
+        color: #0f172a;
+        text-decoration: none;
+        border-radius: 6px;
+        transition: 0.2s;
+    }
+
+    .btn:hover {
+        background: #0ea5e9;
+    }
+
+    h1 {
+        font-size: 120px;
+        margin: 0;
+        color: #38bdf8;
+        animation: float 2s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+}
